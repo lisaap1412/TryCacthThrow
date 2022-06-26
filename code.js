@@ -1,49 +1,80 @@
 const inputFileButton = document.getElementById("inputfilebutton");
-inputFileButton.addEventListener("click", clickFileButton);
+inputFileButton.addEventListener("click", CliqueBotaoArquivo);
 
 const inputNumberButton = document.getElementById("inputnumberbutton");
-inputNumberButton.addEventListener("click", clickNumberButton);
+inputNumberButton.addEventListener("click", CliqueBotaoNumber);
 
-function clickFileButton(){
+function CliqueBotaoArquivo() {
     arquivo = document.getElementById("inputfile");
 
-    var fr=new FileReader();
+   
+    var fr = new FileReader();
+    var info 
 
-    try{
-        fr.readAsText(arquivo.files[0]);
-        fr.onload=function(){
-            info = fr.result; 
-            document.getElementById('output').textContent=fr.result;
-        }  
+    try {  
+
+        if ((arquivo.files[0]) == null) {
+            throw "Arquivo não localizado!" 
+        }
+
+        fr.readAsText(arquivo.files[0]); 
+
+        fr.onload = function () {
+             info = fr.result;
+
+            console.log(`Informação do arquivo: ${info}`)
+            document.getElementById('output').textContent = fr.result;
+
+            if (info == "") { 
+                throw 'Não foi possivel ler o arquivo selecionado'
+            }
+           
+
+        }
+
+        
+
     }
-    catch(erro){
-        console.log(erro);
-        alert(erro);
+
+    catch (error) { 
+
+        console.log(error)
+        alert("Arquivo não localizado!")
+        document.getElementById('output').textContent = "Arquivo não localizado";
     }
-    finally{
-        alert("Obrigado pela visita");
+
+    finally {
+        alert("Obrigado por nos visitar!")
     }
-    
-    
+
+
 }
 
-function clickNumberButton(){
-    // 1) Inserir um campo de input com a mensagem "informe um valor entre 5 a 10"
-    // 2) Verifica se é nulo, se for, lança exception "Informe um valor" 
-    // 3) Verifica se é maior que 5 e menor que 10, se não for, lança exception 
-    // "Informe um valor maior que 5 e menor que 10"
-    // 4) Se o try falhar, lançar exception "Erro + erro javascript"
-    // 5) No finnaly informar "O número escolhido foi + " numero
+function CliqueBotaoNumber(){
+    
 
-    number = document.getElementById("inputnumber").value
+try {
+    
+    valor_digitado = document.getElementById("inputnumber")
+    valor_verificacao =  Number(valor_digitado.value)
 
-    try{
-        if (number == '') throw 'Informe um valor';
-    }
-    catch(erro){
-        document.getElementById("outputnumber").innerHTML = erro;
-    }
+    if(valor_digitado.value == "") throw 'Informe algum valor!'
+    else if (valor_verificacao <= 5 || valor_verificacao >= 10) throw 'Informe um valor maior que 5 e menor que 10'
 
-    console.log(number)
+}
+
+catch(error){
+   
+    document.getElementById("output-number").innerHTML = `Erro: ${error}`
+    console.log(error)
+    alert(`Erro: ${error}`)
+}
+
+finally {
+   
+    document.getElementById("output-number").innerHTML = `O valor digitado foi ${valor_digitado.value}`
+}
+
+
 }
 
